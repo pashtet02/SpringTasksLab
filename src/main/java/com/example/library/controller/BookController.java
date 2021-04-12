@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/books")
@@ -24,14 +26,14 @@ public class BookController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto createBook(@RequestBody BookDto bookDto){
+    public BookDto createBook(@Valid @RequestBody BookDto bookDto){
         log.info("Create book: {}", bookDto);
         return bookService.createBook(bookDto);
     }
 
     @PutMapping(value = "/{title}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto updateBook(@PathVariable String title,@RequestBody BookDto bookDto){
+    public BookDto updateBook(@PathVariable String title, @Valid @RequestBody BookDto bookDto){
         log.info("Update book by title: {} book: {}", title, bookDto);
         return bookService.updateBook(title, bookDto);
     }

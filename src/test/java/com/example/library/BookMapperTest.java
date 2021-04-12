@@ -9,22 +9,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BookMapperTest {
         @Test
-        public void bookToBookDtoTest() {
+        public void toBookDtoTest() {
             Book book = new Book();
             book.setTitle("SourceName");
             book.setDescription("SourceDescription");
-            BookDto bookDto = BookMapper.INSTANCE.bookToBookDto(book);
+            BookDto bookDto = BookMapper.INSTANCE.toBookDto(book);
 
             assertEquals(book.getTitle(), bookDto.getTitle());
             assertEquals(book.getDescription(),
                     bookDto.getDescription());
         }
         @Test
-        public void bookDtoToBookTest() {
+        public void toBookTest() {
             BookDto bookDto = new BookDto();
             bookDto.setTitle("DestinationName");
             bookDto.setDescription("DestinationDescription");
-            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+            Book book = BookMapper.INSTANCE.toBook(bookDto);
             assertEquals(book.getTitle(), bookDto.getTitle());
             assertEquals(book.getDescription(),
                     bookDto.getDescription());

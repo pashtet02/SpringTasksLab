@@ -1,9 +1,14 @@
 package com.example.library.dto;
 
+import com.example.library.validation.UniqueUsernameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Data
@@ -11,8 +16,16 @@ import java.sql.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BookDto {
     private long id;
+
+    @NotNull(message = "${bootTitle.notempty}")
+    @NotBlank(message = "title cannot be empty")
     private String title;
+
+    @NotNull(message = "${bootTitle.notempty}")
+    @NotBlank(message = "title cannot be empty")
     private String author;
+
+    @Positive
     private long isbn;
     private String publisher;
     private Date publishingDate;

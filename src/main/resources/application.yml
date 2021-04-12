@@ -17,6 +17,6 @@ info:
     artifact: @project.artifactId@
     java-version: @java.version@
   app:
-    name: 'Task3'
+    name: 'Task4'
     description: 'This is custom info endpoint'
     author: 'Pavlo Khodachok'

@@ -10,8 +10,8 @@ import org.mapstruct.factory.Mappers;
 public interface BookMapper {
     BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
 
-    Book bookDtoToBook(BookDto bookDto);
+    Book toBook(BookDto bookDto);
 
     @InheritInverseConfiguration
-    BookDto bookToBookDto(Book book);
+    BookDto toBookDto(Book book);
 }
