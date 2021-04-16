@@ -1,5 +1,6 @@
 package com.example.library.repository.impl;
 
+import com.example.library.exception.BookNotFoundException;
 import com.example.library.model.Book;
 import com.example.library.repository.BookRepository;
 import org.springframework.stereotype.Component;
@@ -12,11 +13,16 @@ public class BookRepositoryImpl implements BookRepository {
     List<Book> bookList = new ArrayList<>();
 
     @Override
+    public List<Book> getAllBooks(){
+        return bookList;
+    }
+
+    @Override
     public Book getBook(String title){
        return bookList.stream()
                 .filter(book -> book.getTitle().equals(title))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(BookNotFoundException::new);
     }
 
     @Override
@@ -31,7 +37,7 @@ public class BookRepositoryImpl implements BookRepository {
         if (isDeleted) {
             bookList.add(book);
         } else {
-            throw new RuntimeException("Book does not exists");
+            throw new BookNotFoundException("Book does not exists");
         }
         return book;
     }

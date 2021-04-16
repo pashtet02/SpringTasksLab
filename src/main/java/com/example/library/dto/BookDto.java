@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.sql.Date;
 
 @Data
 @Builder
@@ -30,7 +29,6 @@ public class BookDto {
     @Positive
     private long isbn;
     private String publisher;
-    private Date publishingDate;
     private int numberOfCopies;
     private String language;
     private String image;

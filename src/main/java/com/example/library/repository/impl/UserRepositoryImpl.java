@@ -1,5 +1,6 @@
 package com.example.library.repository.impl;
 
+import com.example.library.exception.UserNotFoundException;
 import com.example.library.model.User;
 import com.example.library.repository.UserRepository;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUser(String username) {
         return list.stream()
                 .filter(user -> user.getUsername().equals(username))
-                .findFirst().orElseThrow(RuntimeException::new);
+                .findFirst().orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (isDeleted) {
             list.add(user);
         } else {
-            throw new RuntimeException("User does not exists");
+            throw new UserNotFoundException("User does not exists");
         }
         return user;
     }

@@ -35,7 +35,7 @@ public class UserDto {
     @NotEmpty(message = "{email.notempty}")
     @NotNull
     @Email(message = "{email.notvalid}")
-    private String mail;
+    private String email;
 
     private String password;
     private String repeatPassword;

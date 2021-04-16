@@ -1,46 +1,48 @@
 package com.example.library.controller;
 
+import com.example.library.api.UserApi;
+import com.example.library.controller.assembler.UserAssembler;
+import com.example.library.controller.model.UserModel;
 import com.example.library.dto.UserDto;
 import com.example.library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 @Slf4j
-public class UserController {
+public class UserController implements UserApi {
     private final UserService userService;
+    private final UserAssembler userAssembler;
 
-    @GetMapping(value = "/{username}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto getUser(@PathVariable String username) {
+    @Override
+    public UserModel getUser(String username) {
         log.info("Get user by username: {}", username);
-        return userService.getUser(username);
+        UserDto userDto = userService.getUser(username);
+        return userAssembler.toModel(userDto);
     }
 
 
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createBook(@Valid @RequestBody UserDto userDto) {
+    @Override
+    public UserModel createUser(UserDto userDto) {
         log.info("Create user: {}", userDto);
-        return userService.createUser(userDto);
+        UserDto user = userService.createUser(userDto);
+        return userAssembler.toModel(user);
     }
 
-    @PutMapping(value = "/{username}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUser(@PathVariable String username, @Valid @RequestBody UserDto userDto) {
+    @Override
+    public UserModel updateUser(String username, UserDto userDto) {
         log.info("Update user by username: {} user: {}", username, userDto);
-        return userService.updateUser(username, userDto);
+        UserDto user = userService.updateUser(username, userDto);
+        return userAssembler.toModel(user);
     }
 
-    @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+    @Override
+    public ResponseEntity<Void> deleteUser(String username) {
         log.info("Delete user by username: {}", username);
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
