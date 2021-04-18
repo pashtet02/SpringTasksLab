@@ -12,11 +12,15 @@ import java.util.List;
 @Component
 public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsernameConstraint, String> {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UniqueUsernameValidator(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void initialize(UniqueUsernameConstraint constraintAnnotation) {
+        //bkj
     }
 
     @Override

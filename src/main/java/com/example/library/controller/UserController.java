@@ -26,7 +26,6 @@ public class UserController implements UserApi {
         return userAssembler.toModel(userDto);
     }
 
-
     @Override
     public UserModel createUser(UserDto userDto) {
         log.info("Create user: {}", userDto);

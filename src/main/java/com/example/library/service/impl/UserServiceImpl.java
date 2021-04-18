@@ -20,9 +20,9 @@ public class UserServiceImpl implements UserService {
 
     //method to get list of all users in info endpoint
     @Override
-    public List<UserDto> getAllUsers(){
+    public List<UserDto> getAllUsers() {
         List<UserDto> userDtoList = new ArrayList<>();
-        for (User user: userRepository.getAllUsers()) {
+        for (User user : userRepository.getAllUsers()) {
             userDtoList.add(UserMapper.INSTANCE.toUserDto(user));
         }
         log.info("getAllUsers, numberOf users: {}", userDtoList.size());
@@ -57,4 +57,5 @@ public class UserServiceImpl implements UserService {
         log.debug("deleteUser() by username {}", username);
         userRepository.deleteUser(username);
     }
+
 }

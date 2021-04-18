@@ -1,6 +1,7 @@
 package com.example.library.service;
 
 import com.example.library.dto.UserDto;
+import com.example.library.model.User;
 
 import java.util.List;
 

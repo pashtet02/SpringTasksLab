@@ -13,7 +13,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final List<User> list = new ArrayList<>();
 
     @Override
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return list;
     }
 
