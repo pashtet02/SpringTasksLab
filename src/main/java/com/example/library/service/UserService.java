@@ -1,12 +1,13 @@
 package com.example.library.service;
 
 import com.example.library.dto.UserDto;
-import com.example.library.model.User;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface UserService {
     List<UserDto> getAllUsers();
+    List<UserDto> getAllUsers(Pageable pageRequest);
 
     UserDto getUser(String username);
 

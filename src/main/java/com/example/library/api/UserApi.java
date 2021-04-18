@@ -6,14 +6,24 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Api(tags = "User management API")
 @RequestMapping("/api/v1/users")
 public interface UserApi {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", paramType = "path", required = true, value = "page number"),
+            @ApiImplicitParam(name = "sortParam", paramType = "path", required = true, value = "sorting parameter"),
+    })
+    @ApiOperation("Get sorted list of all users with pagination")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping()
+    List<UserModel> getAllUsers(@RequestParam(value = "page") Integer page, @RequestParam("sortParam") String sortParam);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", paramType = "path", required = true, value = "User username"),

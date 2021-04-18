@@ -18,8 +18,13 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmailCons
     }
 
     @Override
-    public boolean isValid(String email, ConstraintValidatorContext context) {
+    public void initialize(UniqueEmailConstraint constraintAnnotation) {
+        ConstraintValidator.super.initialize(constraintAnnotation);
+    }
+
+    @Override
+    public boolean isValid(String username, ConstraintValidatorContext context) {
         List<UserDto> allUsers = userService.getAllUsers();
-        return allUsers.stream().noneMatch(userDto -> userDto.getEmail().equals(email));
+        return allUsers.stream().noneMatch(userDto -> userDto.getUsername().equals(username));
     }
 }

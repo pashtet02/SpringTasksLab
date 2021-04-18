@@ -24,6 +24,7 @@ info:
     name: 'Task4'
     description: 'This is custom info endpoint'
     author: 'Pavlo Khodachok'
+
 spring:
   datasource:
     url: 'jdbc:mysql://localhost:3306/springTestDB?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'

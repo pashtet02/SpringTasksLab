@@ -8,8 +8,8 @@ import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +20,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<UserDto> getAllUsers(Pageable pageRequest) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userRepository.findAll(pageRequest)) {
+            userDtoList.add(UserMapper.INSTANCE.toUserDto(user));
+        }
+        log.info("getAllUsers, numberOf users: {}", userDtoList.size());
+        return userDtoList;
+    }
 
     //method to get list of all users in info endpoint
     @Override

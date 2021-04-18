@@ -1,5 +1,6 @@
 package com.example.library.dto;
 
+import com.example.library.model.enums.Role;
 import com.example.library.validation.FieldsValueMatch;
 import com.example.library.validation.UniqueEmailConstraint;
 import com.example.library.validation.UniqueUsernameConstraint;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.util.Set;
 
 @Data
 @Builder
@@ -42,8 +44,16 @@ public class UserDto {
     private String password;
     private String repeatPassword;
 
-    @Pattern(regexp = "(ADMIN|USER)", message = "{role.notvalid}")
-    private String role;
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    //@Pattern(regexp = "(ADMIN|USER|LIBRARIAN)", message = "{role.notvalid}")
+    private Set<Role> roles;
 
     @PositiveOrZero(message = "{fine.notvalid}")
     private double fine;
@@ -51,6 +61,6 @@ public class UserDto {
     private String userLocale;
     private String firstName;
     private String lastName;
-    private boolean isBanned;
+    private boolean active;
 
 }
