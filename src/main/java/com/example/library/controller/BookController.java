@@ -8,6 +8,7 @@ import com.example.library.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,12 @@ public class BookController implements BookApi {
     private final BookService bookService;
     private final BookAssembler bookAssembler;
 
+    /*@Override
+    public List<BookModel> getAllBooks(@PathVariable String sortParam, @PathVariable String pageNumber){
+       return bookService.getAllBooks().stream()
+               .map(bookAssembler::toModel)
+               .collect(Collectors.toList());
+    }*/
     @Override
     public List<BookModel> getAllBooks(){
        return bookService.getAllBooks().stream()

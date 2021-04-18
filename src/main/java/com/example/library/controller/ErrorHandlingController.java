@@ -1,5 +1,6 @@
 package com.example.library.controller;
 
+import com.example.library.exception.BookNotFoundException;
 import com.example.library.exception.ServiceException;
 import com.example.library.exception.UserNotFoundException;
 import com.example.library.model.Error;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,10 +38,23 @@ public class ErrorHandlingController {
         return new Error(ex.getMessage(), ErrorType.DATABASE_ERROR_TYPE, LocalDateTime.now());
     }
 
+    @ExceptionHandler(BookNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Error handleBookNotFoundException(BookNotFoundException ex) {
+        log.error("handleBookNotFoundException: message {}", ex.getMessage());
+        return new Error(ex.getMessage(), ErrorType.DATABASE_ERROR_TYPE, LocalDateTime.now());
+    }
+
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Error handlerServiceException(ServiceException ex) {
         log.error("handlerServiceException: message: {}", ex.getMessage());
+        return new Error(ex.getMessage(), ErrorType.DATABASE_ERROR_TYPE, LocalDateTime.now());
+    }
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Error handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
+        log.error("handleUserNotFoundException: message {}", ex.getMessage());
         return new Error(ex.getMessage(), ErrorType.DATABASE_ERROR_TYPE, LocalDateTime.now());
     }
 }

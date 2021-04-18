@@ -1,6 +1,6 @@
-package com.example.library.api.config;
+package com.example.library.config;
 
-import com.example.library.service.MyBasicAuthenticationEntryPoint;
+import com.example.library.security.MyBasicAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user").password(passwordEncoder().encode("user"))
-                .authorities("ROLE_USER");
+                .authorities("ROLE_USER", "ROLE_ADMIN");
     }
 
     @Override

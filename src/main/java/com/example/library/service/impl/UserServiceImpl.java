@@ -1,12 +1,15 @@
 package com.example.library.service.impl;
 
 import com.example.library.dto.UserDto;
+import com.example.library.exception.UserNotFoundException;
 import com.example.library.mapper.UserMapper;
 import com.example.library.model.User;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,12 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     //method to get list of all users in info endpoint
     @Override
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtoList = new ArrayList<>();
-        for (User user : userRepository.getAllUsers()) {
+        for (User user : userRepository.findAll()) {
             userDtoList.add(UserMapper.INSTANCE.toUserDto(user));
         }
         log.info("getAllUsers, numberOf users: {}", userDtoList.size());
@@ -31,7 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUser(String username) {
-        User user = userRepository.getUser(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
         log.debug("getUser() by username {}", username);
         return UserMapper.INSTANCE.toUserDto(user);
     }
@@ -39,7 +44,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.INSTANCE.toUser(userDto);
-        user = userRepository.createUser(user);
+        String encryptedPass = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPass);
+        user = userRepository.save(user);
         log.debug("createUser() from {}", userDto);
         return UserMapper.INSTANCE.toUserDto(user);
     }
@@ -47,7 +54,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(String username, UserDto userDto) {
         User user = UserMapper.INSTANCE.toUser(userDto);
-        user = userRepository.updateUser(username, user);
+        if (!userRepository.existsByUsername(username)){
+            throw new UserNotFoundException();
+        }
+        user = userRepository.save(user);
         log.debug("updateUser() by username {}, from dto: {}", username, userDto);
         return UserMapper.INSTANCE.toUserDto(user);
     }
@@ -55,7 +65,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username) {
         log.debug("deleteUser() by username {}", username);
-        userRepository.deleteUser(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
     }
 
 }

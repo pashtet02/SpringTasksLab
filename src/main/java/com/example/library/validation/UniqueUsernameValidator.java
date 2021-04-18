@@ -20,7 +20,6 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
 
     @Override
     public void initialize(UniqueUsernameConstraint constraintAnnotation) {
-        //bkj
     }
 
     @Override

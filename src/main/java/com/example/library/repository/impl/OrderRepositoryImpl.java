@@ -1,5 +1,6 @@
 package com.example.library.repository.impl;
 
+import com.example.library.exception.UserNotFoundException;
 import com.example.library.model.Order;
 import com.example.library.model.User;
 import com.example.library.repository.OrderRepository;
@@ -27,7 +28,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> getUserOrders(String username) {
-        User user = userRepository.getUser(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
         return list.stream()
                 .filter(order -> order.getUserId() == user.getId())
                 .collect(Collectors.toList());

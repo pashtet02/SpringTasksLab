@@ -1,17 +1,14 @@
 package com.example.library.repository;
 
 import com.example.library.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-    List<User> getAllUsers();
-
-    User getUser(String username);
-
-    User createUser(User user);
-
-    User updateUser(String username, User user);
-
-    void deleteUser(String username);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
+    void deleteByUsername(String username);
+    boolean existsByUsername(String username);
 }

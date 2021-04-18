@@ -1,6 +1,7 @@
 package com.example.library.dto;
 
 import com.example.library.validation.FieldsValueMatch;
+import com.example.library.validation.UniqueEmailConstraint;
 import com.example.library.validation.UniqueUsernameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class UserDto {
     @NotEmpty(message = "{email.notempty}")
     @NotNull
     @Email(message = "{email.notvalid}")
+    @UniqueEmailConstraint
     private String email;
 
     private String password;
