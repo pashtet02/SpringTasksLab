@@ -34,6 +34,7 @@ public interface BookApi {
     @ApiOperation("Create book")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
     BookModel createBook(@Valid @RequestBody BookDto bookDto);
 
     @ApiImplicitParams({
@@ -42,6 +43,7 @@ public interface BookApi {
     @ApiOperation("Update book by title")
     @PutMapping(value = "/{title}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ADMIN')")
     BookModel updateBook(@PathVariable String title, @Valid @RequestBody BookDto bookDto);
 
     @ApiImplicitParams({
@@ -49,5 +51,6 @@ public interface BookApi {
     })
     @ApiOperation("Delete book by title")
     @DeleteMapping(value = "/{title}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     ResponseEntity<Void> deleteBook(@PathVariable String title);
 }

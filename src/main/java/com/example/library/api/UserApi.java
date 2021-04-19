@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,11 +20,15 @@ public interface UserApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", paramType = "path", required = true, value = "page number"),
             @ApiImplicitParam(name = "sortParam", paramType = "path", required = true, value = "sorting parameter"),
+            @ApiImplicitParam(name = "numberOfUsers", paramType = "path", required = true, value = "Number of users per request"),
     })
     @ApiOperation("Get sorted list of all users with pagination")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    List<UserModel> getAllUsers(@RequestParam(value = "page") Integer page, @RequestParam("sortParam") String sortParam);
+    @PreAuthorize("hasAuthority('ADMIN')")
+    List<UserModel> getAllUsers(@RequestParam(value = "page") Integer page,
+                                @RequestParam("sortParam") String sortParam,
+                                @RequestParam("numOfUsers") Integer numOfUsers);
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", paramType = "path", required = true, value = "User username"),

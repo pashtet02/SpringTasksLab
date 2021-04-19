@@ -28,9 +28,9 @@ public class UserController implements UserApi {
 
     //how to validate sortParam without creating hashSet with valid options???!
     @Override
-    public List<UserModel> getAllUsers(Integer page, String sortParam){
+    public List<UserModel> getAllUsers(Integer page, String sortParam, Integer numOfUsers){
         log.info("Get all users, timestamp {}", LocalDateTime.now());
-        Pageable pageRequest = PageRequest.of(page, 2, Sort.by(sortParam));
+        Pageable pageRequest = PageRequest.of(page, numOfUsers, Sort.by(sortParam));
         return userService.getAllUsers(pageRequest).stream()
                 .map(userAssembler::toModel)
                 .collect(Collectors.toList());
