@@ -1,6 +1,7 @@
 package com.example.library.service;
 
 import com.example.library.dto.UserDto;
+import com.example.library.model.User;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface UserService {
     UserDto updateUser(String username, UserDto userDto);
 
     void deleteUser(String username);
+
+    String signUpUser(User user);
+
+    int enableUser(String username);
 }

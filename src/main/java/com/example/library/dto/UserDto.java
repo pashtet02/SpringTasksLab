@@ -27,7 +27,6 @@ import java.util.Set;
 })
 public class UserDto {
 
-    @PositiveOrZero
     private long id;
 
     @NotNull(message = "{username.notempty}")
@@ -44,21 +43,11 @@ public class UserDto {
     private String password;
     private String repeatPassword;
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    //@Pattern(regexp = "(ADMIN|USER|LIBRARIAN)", message = "{role.notvalid}")
     private Set<Role> roles;
 
     @PositiveOrZero(message = "{fine.notvalid}")
     private double fine;
 
-    private String userLocale;
     private String firstName;
     private String lastName;
     private boolean active;

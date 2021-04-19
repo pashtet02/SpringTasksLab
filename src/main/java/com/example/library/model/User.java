@@ -5,8 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -14,10 +20,15 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "user_sequence",
+            sequenceName = "user_sequence",
+        allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                    generator = "user_sequence")
     private long id;
+
     @Column(unique = true)
     private String username;
     @Column(unique = true)
@@ -42,9 +53,56 @@ public class User {
     private String userLocale;
     private String firstName;
     private String lastName;
-    private boolean active;
+    private Boolean locked = false;
+    private Boolean enabled = false;
 
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> lst = new ArrayList<>();
+        for (Role role: roles) {
+            lst.add(new SimpleGrantedAuthority(role.name()));
+        }
+        return lst;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+    @Override
+    public String getPassword(){
+        return password;
+    }
+    @Override
+    public String getUsername(){
+        return username;
+    }
+
+    public User(String username, String email, String password, Set<Role> roles, double fine, String userLocale, String firstName, String lastName) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.fine = fine;
+        this.userLocale = userLocale;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

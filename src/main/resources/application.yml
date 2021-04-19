@@ -6,6 +6,7 @@ logging:
 server:
   error:
     include-message: always
+    include-binding-errors: always
 
 management:
   endpoints:
@@ -32,6 +33,24 @@ spring:
     password: 'root'
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: 'org.hibernate.dialect.MySQL5InnoDBDialect'
     show-sql: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
